@@ -1,0 +1,20 @@
+<html>
+    <head></head>
+    <body>
+        <input type = "button" id = "order1" value="주문1">
+        <input type = "button" id = "order2" value="주문2">
+
+        <script>
+            const orderHandler1 = function()
+            {
+                alert('aaa');
+            }
+            const orderHandler2 = function()
+            {
+                alert('bbb');
+            }
+            order1.onclick = orderHandler1;
+            order2.addEventListener('click', orderHandler2);
+        </script>
+    </body>
+</html>
