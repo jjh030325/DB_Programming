@@ -9,6 +9,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^4.21.1"
+    "express": "^4.21.1",
+    "mysql2": "^3.11.3",
+    "node-mysql": "^0.4.2"
   }
 }
