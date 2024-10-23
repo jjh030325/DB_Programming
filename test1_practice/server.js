@@ -47,3 +47,13 @@ app.get('/adduser', function(req, res){
         res.send(`'${title}','${content}','${writer}','${email}' 추가되었습니다.`);
     });
 })
+app.get('/updateuser', function(req, res){
+    const {title, content, writer, email} = req.query;
+    var query1 = `update post_bk set title='${title}', content='${content}', created=now(), writer='${writer}', email='${email}' where title='${title}'`;
+
+    conn.query(query1, [title, content, writer, email], (err, rows, fields) =>
+    {
+        if(err) throw err;
+        res.send(`'${title}'의 데이터가 '${content}','${writer}','${email}'로 변경되었습니다.`);
+    });
+})
