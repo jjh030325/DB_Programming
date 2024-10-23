@@ -18,7 +18,7 @@ app.listen(8080, function(){
 //저자 성으로 검색 책 목록
 app.get('/list', function(req, res){
     const {author} = req.query;
-    var query1 = `select book_id, title, author, isbn from book where '${author.split(" ")}' = '${author}'`;
+    var query1 = `select book_id, title, author, isbn from book where '${author}' = '${author}'`;
 
     conn.query(query1, (err, rows, fields) =>
     {
