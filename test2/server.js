@@ -115,55 +115,31 @@ app.get('/return', (req, res) => {
 app.get('/delaylist', (req, res) => {
     const { date } = req.query;
 
-    // 입력된 date의 연, 월, 일 추출 및 정수 변환
-    const inputYear = parseInt(date.slice(0, 4), 10);
-    const inputMonth = parseInt(date.slice(4, 6), 10);
-    const inputDay = parseInt(date.slice(6, 8), 10);
+    const convertDate = new Date(
+        date.substring(0, 4),
+        date.substring(4, 6) - 1,
+        date.substring(6, 8)
+    );
 
-    const query = `SELECT * FROM rental where return_date IS null`;
+    console.log(convertDate);
 
-    // 각 월의 일수를 정의하고 윤년을 고려하여 계산하는 함수
-    const daysInMonth = (year, month) => {
-        const monthDays = [31, (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        return monthDays[month - 1];
-    };
+    const criteriaDate = convertDate;
+    criteriaDate.setDate(criteriaDate.getDate() - 7);
 
-    conn.query(query, (err, results) => {
-        if (err) {
+    console.log(criteriaDate);
+
+    conn.query('select * from rental', (err, result) => {
+        if(err) { 
             console.log(err);
-            throw err;
+            return res.status(500).json({error : 'DB Error'});
         }
-
-        const overdueRentals = results.filter(rental => {
-            // rental_date를 연, 월, 일로 분리 후 정수 변환
-            const rentalYear = parseInt(rental.rental_date.slice(0, 4), 10);
-            const rentalMonth = parseInt(rental.rental_date.slice(5, 7), 10);
-            const rentalDay = parseInt(rental.rental_date.slice(8, 10), 10);
-
-            // 일수 차이를 계산하기 위한 변수
-            let totalDaysDifference = 0;
-
-            // 년도 차이를 일수로 변환
-            for (let y = rentalYear; y < inputYear; y++) {
-                totalDaysDifference += (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 366 : 365;
-            }
-
-            // 월 차이를 일수로 변환
-            for (let m = rentalMonth; m < inputMonth; m++) {
-                totalDaysDifference += daysInMonth(inputYear, m);
-            }
-
-            // 일 차이를 일수로 변환
-            totalDaysDifference += inputDay - rentalDay;
-
-            // 연체 여부 확인
-            return totalDaysDifference > 7;
+        var filterResult = result.filter(row => {
+            const rental_date = new Date(row.rental_date)
+            return rental_date <= criteriaDate;
         });
-
-        res.send(overdueRentals);
-    });
+        res.send(filterResult);
+    })
 });
-
 
 app.get('/book', function(req, res){
     res.send('도서 목록 관련 페이지입니다.');
