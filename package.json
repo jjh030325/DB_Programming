@@ -9,9 +9,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "express": "^4.21.1",
     "mongodb": "^6.10.0",
     "mysql2": "^3.11.3",
-    "node-mysql": "^0.4.2"
+    "node-mysql": "^0.4.2",
+    "nodemon": "^3.1.7"
   }
 }
