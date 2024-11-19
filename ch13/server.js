@@ -24,11 +24,14 @@ app.get("/enter", function(req, res){
 
 app.post("/save", function(req, res){
   var title = req.body.title;
-  var context = req.body.context;
+  var content = req.body.content;
 
-  var query = 'insert title, context from book';
+  console.log(title);
+  console.log(content);
 
-  conn.query(query, (err, result) => {
+  var query = `insert into posts (title, content) values ('${title}', '${content}')`;
+
+  conn.query(query, [title, content], (err, result) => {
     if(err) {
         console.log(err);
         throw err;
