@@ -2,14 +2,13 @@ const express = require("express");
 const mongoClient = require('mongodb').MongoClient;
 var mydb;
 
-const url = 'mongodb+srv://wpqlks7:CG1XXLSsTwf5EWri@myboard.9qhlg.mongodb.net/';
+const url = 'mongodb+srv://wpqlks7:rSYXjxiAdsmn2D4D@myboard.9qhlg.mongodb.net/';
 mongoClient.connect(url)
   .then(client=> {
   console.log('몽고DB 접속 성공');
   mydb = client.db('myboard');
 });
 
-/*
 const mysql = require("mysql2");
 
 var conn = mysql.createConnection({
@@ -18,7 +17,6 @@ var conn = mysql.createConnection({
   password: "alchivepw",
   database: "myboard",
 })
-*/
 
 const app = express();
 
@@ -32,18 +30,28 @@ app.listen(8080, function(){
 //conn.connect();
 
 app.get("/enter", function(req, res){
-  res.render('list.ejs');
+  //res.sendFile(__dirname + '/index.html');
+  res.render('enter.ejs');
+})
+
+app.post("/delete", (req, res) => {
+  console.log(req.body);
+  console.log('삭제완료');
 })
 
 app.get("/list", function(req, res){
-  res.sendFile(__dirname + '/../views/list.ejs');
-})
+  mydb.collection('post').find().toArray().then( result => {
+    //console.log(result);
+    res.render('list.ejs', {data : result});
+  });
+});
 
 app.post("/save", function(req, res){
   mydb.collection('post').insertOne(
     {
       title : req.body.title, 
-      content : req.body.content
+      content : req.body.content,
+      date : req.body.someDate
     }
   ).then(result=> {
     console.log(result);
