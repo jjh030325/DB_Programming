@@ -1,0 +1,19 @@
+{
+  "name": "board",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lch",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongodb": "^5.1.0",
+    "node-mysql": "^0.4.2",
+    "objectid": "^3.2.1"
+  }
+}
